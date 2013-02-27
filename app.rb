@@ -49,7 +49,7 @@ end
 
 post '/write' do
 
-    redirect '/login' unless sesson != nil && session.authorized?
+    redirect '/login' unless session != nil && session.authorized?
 
     entry = params[:entry]
 
