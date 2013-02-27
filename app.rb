@@ -80,5 +80,8 @@ post '/write' do
     tmpfile.close
     tmpfile.unlink
 
+    @blink = 'logout'
+    @btext = 'Log Out'
+    @bclass =''
     erb :write
 end
