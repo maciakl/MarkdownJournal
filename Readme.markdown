@@ -1,4 +1,25 @@
-This is a work in progress...
+Markdown Journal
+================
+
+An online journal which saves short, tweet like entries into Markdown documents inside of your Dropbox.
+
+Requirements
+------------
+
+### Runtime Requirements
+
+* Ruby
+* Ruby Gems
+* Sinatra
+
+### Development Time Requirements
+
+* Node.js
+* Bower
+
+### User Requirements
+
+* Dropbox account to store the journal
 
 Config
 ------

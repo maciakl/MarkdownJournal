@@ -28,9 +28,9 @@
     <![endif]-->
 
     <!-- Add your own favicon -->
-    <link rel="shortcut icon" href="favicon.png"/>
-
-  </head>
+    <link rel="shortcut icon" href="favicon.ico"/>
+    <link rel="apple-touch-icon" HREF="apple-touch-icon.png" />
+</head>
 
   <body>
 
@@ -45,11 +45,8 @@
           <a class="brand" href="/">Mardkown Journal</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="/write">Write</a></li>
-              <li><a href="/about">About</a></li>
-              <li><a href="/contact">Contact</a></li>
             </ul>
-            <a class="btn pull-right" href="/<%=@btn%>"><%=@btn%></a>
+            <a class="btn pull-right <%=@bclass%>" href="<%=@blink%>"><%=@btext%></a>
           </div><!--/.nav-collapse -->
         </div>
       </div>
@@ -62,7 +59,7 @@
       <hr/>
 
       <footer>
-        <p>&copy; Company 2012</p>
+        <p>&copy; Luke Maciak 2013</p>
       </footer>
 
     </div> <!-- /container -->

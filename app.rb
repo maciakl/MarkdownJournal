@@ -14,7 +14,9 @@ ACCESS_TYPE = :app_folder
 session = DropboxSession.new(APP_KEY, APP_SECRET)
 
 get '/' do
-    @btn = 'login'
+    @blink = 'login'
+    @btext = 'Write'
+    @bclass = 'btn-primary'
     erb :index
 end
 
@@ -31,7 +33,9 @@ end
 get '/write' do
     begin
         session.get_access_token
-        @btn = 'logout'
+        @blink = 'logout'
+        @btext = 'Log Out'
+        @bclass =''
         erb :write
     rescue
         redirect '/login'
@@ -47,7 +51,8 @@ post '/write' do
     tm = Time.now
 
     dropFileName = tm.strftime("%Y-%m.%B") + ".markdown"
-    heading = "**" + tm.strftime("%a %d %l:%M%P") + "** "
+    heading = "**" + tm.strftime("%a %d at %l:%M%P") + "** -\t"
+    big_heading = "#" + tm.strftime("%B %Y")
 
     tmpfile = Tempfile.new(dropFileName)
 
@@ -56,9 +61,10 @@ post '/write' do
         client = DropboxClient.new(session, ACCESS_TYPE)
         oldfile = client.get_file(dropFileName)
         tmpfile.write(oldfile)
-        tmpfile.write("\r\n")
+        tmpfile.write("  \n")
     rescue
         puts "File not found... Creating new one"
+        tmpfile.write(big_heading+"  \n  \n")
     end 
     
     # append the entry to the end of the file
@@ -70,8 +76,6 @@ post '/write' do
     tmpfile.open
     response = client.put_file("/"+dropFileName, tmpfile, true)
     puts "uploaded: ", response.inspect
-
-    
 
     tmpfile.close
     tmpfile.unlink
