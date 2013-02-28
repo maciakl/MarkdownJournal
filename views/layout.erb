@@ -53,6 +53,8 @@
             Markdown Journal</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
+                <li><a href="/about">About</a></li>
+                <li><a href="/contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -61,7 +63,13 @@
 
     <div class="container">
         
-        <a class="btn btn-large pull-right <%=@bclass%>" href="<%=@blink%>"><%=@btext%></a>
+        <div class="row">
+            <div class="span12">
+                <% if @blink != nil %>
+                    <a class="btn btn-large pull-right <%=@bclass%>" href="<%=@blink%>"><%=@btext%></a>
+                <% end %>
+            </div>
+        </div>
 
         <%= yield %>
 

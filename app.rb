@@ -15,7 +15,7 @@ session = nil
 
 get '/' do
     @blink = 'login'
-    @btext = 'Write'
+    @btext = '<i class="icon-edit icon-white"></i> Write'
     @bclass = 'btn-primary'
     erb :index
 end
@@ -90,4 +90,12 @@ post '/write' do
     @btext = 'Log Out'
     @bclass =''
     erb :write
+end
+
+get '/about' do
+    erb :about
+end
+
+get '/contact' do
+    erb :contact
 end
