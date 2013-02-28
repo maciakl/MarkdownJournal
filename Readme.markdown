@@ -48,6 +48,6 @@ Markdown Journal is licensed under [GPLv3][gp].
 [sn]: http://www.sinatrarb.com/
 [dx]: http://www.dropbox.com
 [db]: https://www.dropbox.com/developers/core/setup#ruby
-[nd]: http://nodejs.org/
+[no]: http://nodejs.org/
 [bo]: http://twitter.github.com/bower/
 [gp]: http://www.gnu.org/licenses/gpl-3.0-standalone.html
