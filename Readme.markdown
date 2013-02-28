@@ -15,6 +15,8 @@ Requirements
 
 ### Development Time Requirements
 
+These are optional, but make your life easier. I have not included the Twitter Boostrap or jQuery files with this project. Instead the `public` directory contains a `component.json` file with list of dependencies. This file is used by bower to fetch the required files. To use it you will need:
+
 * [Node.js][no]
 * [Bower][bo]
 
@@ -24,6 +26,8 @@ Requirements
 
 Config
 ------
+
+You will need a Dropbox API key. You can [register one here][rg]. Once you have *App key* and *App secret* values you will need to create a configuration file for your application.
 
 Create a file `config.yml` in the root directory of the project. Inside you should have:
 
@@ -36,6 +40,21 @@ Go to the `public` directory and run:
     bower install
 
 This will fetch Twitter Bootstrap and jQuery into the `public/components` directory. Now you should be all set.
+
+Make sure you have `sinatra` and `dropbox-sdk` gems installed:
+
+    gem install sinatra
+    gem install dropbox-sdk
+
+You can run the application locally like this:
+
+    ruby app.rb
+
+On older versions of ruby you may need to use:
+
+    ruby -rubygems app.rb
+
+This will run a server at `http://localhost:4567`.
 
 Licensing
 ---
@@ -51,3 +70,5 @@ Markdown Journal is licensed under [GPLv3][gp].
 [no]: http://nodejs.org/
 [bo]: http://twitter.github.com/bower/
 [gp]: http://www.gnu.org/licenses/gpl-3.0-standalone.html
+
+[rg]: https://www.dropbox.com/developers/apps
