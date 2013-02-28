@@ -67,10 +67,10 @@ post '/write' do
         client = DropboxClient.new(session, ACCESS_TYPE)
         oldfile = client.get_file(dropFileName)
         tmpfile.write(oldfile)
-        tmpfile.write("  \n")
+        tmpfile.write("  \n\r")
     rescue
         puts "File not found... Creating new one"
-        tmpfile.write(big_heading+"  \n  \n")
+        tmpfile.write(big_heading+"  \n\r")
     end 
     
     # append the entry to the end of the file
