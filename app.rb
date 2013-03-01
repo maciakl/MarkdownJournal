@@ -75,14 +75,14 @@ post '/write' do
         client = DropboxClient.new(session, ACCESS_TYPE)
         oldfile = client.get_file(dropFileName)
         tmpfile.write(oldfile)
-        tmpfile.write("  \n\r")
+        tmpfile.write("  \r\n  \r\n")
     rescue
         puts "File not found... Creating new one"
-        tmpfile.write(big_heading+"  \n\r")
+        tmpfile.write(big_heading+"  \r\n  \r\n")
     end 
     
     # include daily heading if it is not in already
-    tmpfile.write(daily_heading + "\n\r") unless ( oldfile != nil && oldfile.include?(daily_heading) )
+    tmpfile.write(daily_heading + "  \r\n  \r\n") unless ( oldfile != nil && oldfile.include?(daily_heading) )
 
     # append the entry to the end of the file
     tmpfile.write(heading)
