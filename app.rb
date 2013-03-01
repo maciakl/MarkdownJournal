@@ -54,6 +54,8 @@ post '/write' do
 
     entry = params[:entry]
 
+    redirect '/write' if entry.empty?
+
     # figure out the name of the file for dropbox
     tm = Time.now
 
