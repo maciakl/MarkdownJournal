@@ -10,8 +10,9 @@ Requirements
 
 * [Ruby][rb]
 * [Ruby Gems][gm]
-* [Sinatra][sn]
-* [Dropbox SDK][db]
+* [Sinatra Gem][sn]
+* [Active Support Gem][as]
+* [Dropbox SDK Gem][db]
 
 ### Development Time Requirements
 
@@ -67,6 +68,7 @@ Markdown Journal is licensed under [GPLv3][gp].
 [sn]: http://www.sinatrarb.com/
 [dx]: http://www.dropbox.com
 [db]: https://www.dropbox.com/developers/core/setup#ruby
+[as]: http://rubygems.org/gems/activesupport
 [no]: http://nodejs.org/
 [bo]: http://twitter.github.com/bower/
 [gp]: http://www.gnu.org/licenses/gpl-3.0-standalone.html
