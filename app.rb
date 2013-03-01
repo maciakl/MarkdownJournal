@@ -2,6 +2,7 @@ require 'sinatra'
 require 'tempfile'
 require 'yaml'
 require 'dropbox_sdk'
+require 'active_support/core_ext/integer/inflections'
 
 config = YAML::load(File.open('config.yml'))
 
@@ -57,7 +58,14 @@ post '/write' do
     tm = Time.now
 
     dropFileName = tm.strftime("%Y-%m.%B") + ".markdown"
-    heading = "**" + tm.strftime("%a %d at %l:%M%P") + "** -\t"
+
+    # Define the headings:
+
+    # Time of post
+    heading = "**" + tm.strftime("%l:%M%P") + "** -\t"
+    # Day of the week
+    daily_heading = "##" + tm.strftime("%A") + " the " + tm.day.ordinalize
+    # Month and year
     big_heading = "#" + tm.strftime("%B %Y")
 
     tmpfile = Tempfile.new(dropFileName)
@@ -73,6 +81,9 @@ post '/write' do
         tmpfile.write(big_heading+"  \n\r")
     end 
     
+    # include daily heading if it is not in already
+    tmpfile.write(daily_heading + "\n\r") unless ( oldfile != nil && oldfile.include?(daily_heading) )
+
     # append the entry to the end of the file
     tmpfile.write(heading)
     tmpfile.write(entry)
