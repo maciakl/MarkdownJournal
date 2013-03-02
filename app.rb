@@ -4,7 +4,7 @@ require 'yaml'
 require 'dropbox_sdk'
 require 'active_support/core_ext/integer/inflections'
 
-YAML::ENGINE.yamler= 'syck'
+#YAML::ENGINE.yamler= 'syck'
 config = YAML::load_file('config.yml')
 
 APP_KEY = config['key']
