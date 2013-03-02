@@ -57,6 +57,16 @@ On older versions of ruby you may need to use:
 
 This will run a server at `http://localhost:4567`.
 
+Known Issues
+------------
+
+If you run into parsing errors when reading user YAML files, uncomment the following line in the code:
+
+    YAML::ENGINE.yamler= 'syck'
+
+In the newer versions of Ruby the default YAML parser sometimes throws a fit when reading files that have weird line endings or other artifacts. The Syck parser seems to work fine most of the time.
+    
+
 Licensing
 ---
 
