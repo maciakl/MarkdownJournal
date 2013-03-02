@@ -1,0 +1,44 @@
+<div class="row">
+
+    <div class="span6">
+        <h2>File Storage Privacy</h2>
+
+        <p>Does <em>Markdown Journal</em> ever store your files on the server?</p>
+
+        <p class="text-error">No. The files are not held on the server.</p>
+
+        <p>Your files are stored in your Dropbox account. They are temporarily downloaded to the server
+        for the purpose of appending new entry to the file. Once the new entry is added, and the file is
+        sent back to Dropbox it is deleted immediately.</p>
+
+        <p>The temp file creation is accomplished using the 
+        <a href="http://www.ruby-doc.org/stdlib-1.9.3/libdoc/tempfile/rdoc/Tempfile.html">Ruby Tempfile</a> class.
+        We encourage you to read up on the way it is implemented and use that knowledge to decide whether this
+        temporary form of storage is up to your requirements.</p>
+
+        <p><em>Markdown Journal</em> does not log or store your entries. The application code also does not track
+        your usage in any way, shape or form. Please note however that your usage is logged by the server for maintenance
+        and security purposes. These logs are never shared with any third party and are only used internally for the 
+        purpose of security audits and usage metrics.</p>
+
+    </div>
+
+    <div class="span6">
+
+        <h2>Check for Yourself</h2>
+
+        <p>Why should you trust <em>Markdown Journal</em> with your personal diary? You shouldn't. As a rule of
+        thumb you should never fully trust any online service with your data. You shouldn't even trust Dropbox.</p>
+
+        <p>But in case of <em>Markdown Journal</em> you can actually verify it is not doing anything shady by 
+        <a href="https://github.com/maciakl/MarkdownJournal">reading the code</a>:</p>
+
+        <img src="img/privacy.PNG" alt="Code Snippet"/>
+
+        <p>As you can see, the temp file is deleted seconds after it is written to the disk.</p>
+
+
+
+    </div>
+
+</div>

@@ -4,7 +4,8 @@ require 'yaml'
 require 'dropbox_sdk'
 require 'active_support/core_ext/integer/inflections'
 
-config = YAML::load(File.open('config.yml'))
+YAML::ENGINE.yamler= 'syck'
+config = YAML::load_file('config.yml')
 
 APP_KEY = config['key']
 APP_SECRET = config['secret']
@@ -50,35 +51,55 @@ end
 
 post '/write' do
 
+    # make sure the user authorized with Drobox
     redirect '/login' unless session != nil && session.authorized?
 
     entry = params[:entry]
 
+    # if empty string was submitted, do nothing
     redirect '/write' if entry.empty?
 
     # figure out the name of the file for dropbox
+    # Default format is YYYY-MM-Monthname.markdown
     tm = Time.now
-
     dropFileName = tm.strftime("%Y-%m.%B") + ".markdown"
 
-    # Define the headings:
-
-    # Time of post
-    heading = "**" + tm.strftime("%l:%M%P") + "** -\t"
-    # Day of the week
-    daily_heading = "##" + tm.strftime("%A") + " the " + tm.day.ordinalize
-    # Month and year
+    # Define the default headings 
+    
+    # Month and year - goes at the top of a new document
     big_heading = "#" + tm.strftime("%B %Y")
+    
+    # Day of the week - only included once per day
+    daily_heading = "##" + tm.strftime("%A") + " the " + tm.day.ordinalize
+    
+    # Time-stamp for each entry
+    heading = "**" + tm.strftime("%l:%M%P") + "** -\t"
 
     tmpfile = Tempfile.new(dropFileName)
+    client = DropboxClient.new(session, ACCESS_TYPE)
 
-    #download the file if it exists
+    # check for config.yml in users folder
     begin
-        client = DropboxClient.new(session, ACCESS_TYPE)
+        tmpcnf = client.get_file("config.yml")
+        puts tmpcnf
+        cnf = YAML::load(tmpcnf)
+
+        big_heading = "#" + tm.strftime(cnf['document_heading']) unless cnf['document_heading'] == nil
+        daily_heading = "##" + tm.strftime(cnf['daily_heading']) unless cnf['daily_heading'] == nil
+        heading = "**" + tm.strftime(cnf['timestamp']) + "** -\t" unless cnf['timestamp'] == nil
+    rescue 
+        puts "No config file..."
+    end
+
+
+
+    begin
+        # try downloading this months file
         oldfile = client.get_file(dropFileName)
         tmpfile.write(oldfile)
         tmpfile.write("  \r\n  \r\n")
     rescue
+        # if the file does not exist on dropbox create new tempfile
         puts "File not found... Creating new one"
         tmpfile.write(big_heading+"  \r\n  \r\n")
     end 
@@ -94,11 +115,13 @@ post '/write' do
     # Drobpbox upload
     tmpfile.open
     response = client.put_file("/"+dropFileName, tmpfile, true)
-    puts "uploaded: ", response.inspect
+    #puts "uploaded: ", response.inspect
 
+    # cleanup
     tmpfile.close
     tmpfile.unlink
 
+    # display the write page again
     @blink = 'logout'
     @btext = 'Log Out'
     @bclass =''
@@ -111,4 +134,12 @@ end
 
 get '/contact' do
     erb :contact
+end
+
+get '/config' do
+    erb :config
+end
+
+get '/privacy' do
+    erb :privacy
 end

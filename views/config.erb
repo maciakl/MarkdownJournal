@@ -1,0 +1,43 @@
+<div class="row">
+
+    <div class="span6">
+        <h2>Configuration</h2>
+
+        <p><em>Markdown Journal</em> creates journal files using pre-set default headings. 
+        These headings can be seen in the image below:</p>
+
+        <img src="img/text2.PNG" alt="Sample Text"/>
+
+        <p>These headings are added automatically as you write your entries. They have following names:</p>
+
+        <ul>
+            <li><samp style="color: blue;">document_heading</samp> - circled in blue is added at the start of a new document.</li>
+            <li><samp style="color: green;">daily_heading</samp> - circled in green is added at the start of a new day</li>
+            <li><samp style="color: purple;">timestamp</samp> - circled in purple is attached to every entry</li>
+        </ul>
+
+        <p>You can redefine these headings using a config file.</p>
+
+    </div>
+
+    <div class="span6">
+        <h2>Config File</h2>
+
+        <p>To create a new config file simply put a file named <samp>config.yml</samp> in the same Dropbox
+        folder as your journal entries like this:</p>
+
+        <img src="img/configfile.PNG" alt="Dropbox Screenshot"/>
+
+        <p>The contents of the file should be valid YAML syntax and include an entry for each heading:</p>
+
+        <img src="img/config.PNG" alt="Sample Config File"/>
+
+        <p>The values should follow the formating guidelines for the 
+        <a href="http://www.ruby-doc.org/core-2.0/Time.html#method-i-strftime">Ruby strftime method</a>.</p>
+
+        <p><strong>Note:</strong> if you change the config file in the middle of the day, it could cause the
+        <samp>daily_heading</samp> to get re-inserted into the file at the next entry.</p>
+
+    </div>
+
+</div>
