@@ -11,9 +11,9 @@
         <p>These headings are added automatically as you write your entries. They have following names:</p>
 
         <ul>
-            <li><samp style="color: blue;">document_heading</samp> - circled in blue is added at the start of a new document.</li>
-            <li><samp style="color: green;">daily_heading</samp> - circled in green is added at the start of a new day</li>
-            <li><samp style="color: purple;">timestamp</samp> - circled in purple is attached to every entry</li>
+            <li><code style="color: blue;">document_heading</code> - marked in blue is added at the start of a new document.</li>
+            <li><code style="color: green;">daily_heading</code> - marked in green is added at the start of a new day</li>
+            <li><code style="color: purple;">timestamp</code> - marked in pink is attached to every entry</li>
         </ul>
 
         <p>You can redefine these headings using a config file.</p>
@@ -23,7 +23,7 @@
     <div class="span6">
         <h2>Config File</h2>
 
-        <p>To create a new config file simply put a file named <samp>config.yml</samp> in the same Dropbox
+        <p>To create a new config file simply put a file named <code>config.yml</code> in the same Dropbox
         folder as your journal entries like this:</p>
 
         <img src="img/configfile.PNG" alt="Dropbox Screenshot"/>
@@ -35,8 +35,99 @@
         <p>The values should follow the formating guidelines for the 
         <a href="http://www.ruby-doc.org/core-2.0/Time.html#method-i-strftime">Ruby strftime method</a>.</p>
 
-        <p><strong>Note:</strong> if you change the config file in the middle of the day, it could cause the
-        <samp>daily_heading</samp> to get re-inserted into the file at the next entry.</p>
+        <p><span class="label label-info">Note!</span> If you change the config file in the middle of the day, it could cause the
+        <code>daily_heading</code> to get re-inserted into the file at the next entry.</p>
+
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="span6">
+        <h2>Acceptable Config Values</h2>
+
+        <p>You can use the following symbols in the config file:</p>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Value</th>
+                    <th>Explanation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>%Y</td><td>4 digit year (eg. 2013)</td></tr>
+                <tr><td>%y</td><td>2 digit year (74, 98, etc..)</td></tr>
+                <tr><td>%m</td><td>Month number, zero padded (01-12)</td></tr>
+                <tr><td>%B</td><td>Full month name (January)</td></tr>
+                <tr><td>%b</td><td>Abbreviated month name (Jan)</td></tr>
+                <tr><td>%b</td><td>Abbreviated month name (Jan)</td></tr>
+                <tr><td>%d</td><td>Day of the month, zero padded (01-31)</td></tr>
+                <tr><td>%e</td><td>Day of the month, blank padded ( 1-31)</td></tr>
+                <tr><td>%H</td><td>Hour, 24hr format, zero padded (00-23)</td></tr>
+                <tr><td>%k</td><td>Hour, 24hr format, blank padded ( 0-23)</td></tr>
+                <tr><td>%I</td><td>Hour, 12hr format, zero padded (01-12)</td></tr>
+                <tr><td>%i</td><td>Hour, 12hr format, blank padded ( 1-12)</td></tr>
+                <tr><td>%P</td><td>Meridian, lowercase (am, pm)</td></tr>
+                <tr><td>%p</td><td>Meridian, uppercase (AM, PM)</td></tr>
+                <tr><td>%M</td><td>Minutes, zero padded (00-59)</td></tr>
+                <tr><td>%S</td><td>Seconds, zero padded (00-59)</td></tr>
+                <tr><td>%L</td><td>Milliseconds, zero padded (000-999)</td></tr>
+                <tr><td>%A</td><td>Weekday, full name (Monday)</td></tr>
+                <tr><td>%a</td><td>Weekday, abbreviated (Mon)</td></tr>
+                <tr><td>%D</td><td>Short date (02/28/13)</td></tr>
+                <tr><td>%F</td><td>ISO 8601 date (2013-02-28)</td></tr>
+                <tr><td>%r</td><td>12 hour time with seconds (01:30:10 PM)</td></tr>
+                <tr><td>%R</td><td>24 hour time without seconds (13:30)</td></tr>
+                <tr><td>%T</td><td>24 hour time with seconds (13:30:10)</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="span6">
+        <h2>Examples</h2>
+
+        <p>You can combine the listed symbols to create any heading you want. Note that you
+        can add formating characters between these symbols for example you could try keeping
+        your <code>config.yml</code> very simple:</p>
+
+        <pre>
+        document_heading: %Y-%m
+        daily_heading: %d
+        timestamp: %R
+        </pre>
+
+        <p>This would yield a very minimalistic Journal style:</p>
+
+        <pre>
+        #2013-03
+        
+        ##02
+        
+        **13:30:10** -  This is my journal entry...
+        </pre>
+
+        <p>Alternatively, you could get very fancy:</p>
+
+        <pre>
+        document_heading: Journal Entries for %B of %Y
+        daily_heading: Notes for %A, %e
+        timestamp: Posted at %r
+        </pre>
+
+        <p>This would likely look something like this:</p>
+
+        <pre>
+        #Journal Entries for March of 2013
+
+        ##Notes for Monday, 04
+        
+        **Posted at 01:30:10 PM** -     This is my journal entry...
+        </pre>
+
+        <p>To reset your headings back to the default, simply delete the 
+        <code>config.yml</code> file from your dropbox folder.</p>
 
     </div>
 
