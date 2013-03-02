@@ -93,38 +93,26 @@
         your <code>config.yml</code> very simple:</p>
 
         <pre>
-        document_heading: %Y-%m
-        daily_heading: %d
-        timestamp: %R
+    document_heading: %Y-%m
+    daily_heading: %d
+    timestamp: %R
         </pre>
 
         <p>This would yield a very minimalistic Journal style:</p>
 
-        <pre>
-        #2013-03
-        
-        ##02
-        
-        **13:30:10** -  This is my journal entry...
-        </pre>
+        <img src="img/samp1.PNG" alt="Minimalistic Journal"/>
 
         <p>Alternatively, you could get very fancy:</p>
 
         <pre>
-        document_heading: Journal Entries for %B of %Y
-        daily_heading: Notes for %A, %e
-        timestamp: Posted at %r
+    document_heading: Journal Entries for %B of %Y
+    daily_heading: Notes for %A, %e
+    timestamp: Posted at %r
         </pre>
 
         <p>This would likely look something like this:</p>
 
-        <pre>
-        #Journal Entries for March of 2013
-
-        ##Notes for Monday, 04
-        
-        **Posted at 01:30:10 PM** -     This is my journal entry...
-        </pre>
+        <img src="img/samp2.PNG" alt="Fancy Journal"/>
 
         <p>To reset your headings back to the default, simply delete the 
         <code>config.yml</code> file from your dropbox folder.</p>
