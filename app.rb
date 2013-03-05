@@ -3,6 +3,7 @@ require 'tempfile'
 require 'yaml'
 require 'dropbox_sdk'
 require 'active_support/core_ext/integer/inflections'
+require 'active_support/time'
 
 #YAML::ENGINE.yamler= 'syck'
 config = YAML::load_file('config.yml')
@@ -11,6 +12,7 @@ APP_KEY = config['key']
 APP_SECRET = config['secret']
 URL = config['url']
 ACCESS_TYPE = :app_folder
+
 
 #enable :sessions
 session = nil 
@@ -61,8 +63,8 @@ post '/write' do
 
     # figure out the name of the file for dropbox
     # Default format is YYYY-MM-Monthname.markdown
-    ENV['TZ'] = 'US/Eastern'
-    tm = Time.now
+    Time.zone = "Eastern Time (US & Canada)"
+    tm = Time.zone.now
     dropFileName = tm.strftime("%Y-%m.%B") + ".markdown"
 
     # Define the default headings 
