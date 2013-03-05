@@ -61,6 +61,7 @@ post '/write' do
 
     # figure out the name of the file for dropbox
     # Default format is YYYY-MM-Monthname.markdown
+    ENV['TZ'] = 'US/Eastern'
     tm = Time.now
     dropFileName = tm.strftime("%Y-%m.%B") + ".markdown"
 
