@@ -14,8 +14,7 @@ URL = config['url']
 ACCESS_TYPE = :app_folder
 
 
-#enable :sessions
-session = nil 
+enable :sessions
 
 get '/' do
     @blink = 'login'
@@ -25,23 +24,25 @@ get '/' do
 end
 
 get '/login' do
-    session = DropboxSession.new(APP_KEY, APP_SECRET)
-    session.get_request_token
-    redirect authorize_url = session.get_authorize_url(URL)
+    dropbox_session = DropboxSession.new(APP_KEY, APP_SECRET)
+    dropbox_session.get_request_token
+    session[:dropbox] = dropbox_session.serialize()
+    redirect authorize_url = dropbox_session.get_authorize_url(URL)
 end
 
 get '/logout' do
-    session.clear_access_token
-    session = nil
+    session = {}
     redirect '/'
 end
 
 get '/write' do
 
-    redirect '/login' unless session != nil
+    #redirect '/login' unless session[:dropbox] != nil
+    dropbox_session = DropboxSession::deserialize(session[:dropbox])
 
     begin
-        session.get_access_token
+        dropbox_session.get_access_token
+        session[:dropbox] = dropbox_session.serialize();
         @blink = 'logout'
         @btext = 'Log Out'
         @bclass =''
@@ -54,7 +55,10 @@ end
 post '/write' do
 
     # make sure the user authorized with Drobox
-    redirect '/login' unless session != nil && session.authorized?
+    redirect '/login' unless session[:dropbox] 
+    
+    dropbox_session = DropboxSession::deserialize(session[:dropbox])
+    redirect 'login' unless dropbox_session.authorized?
 
     entry = params[:entry]
 
@@ -79,7 +83,7 @@ post '/write' do
     heading = "**" + tm.strftime("%l:%M%P") + "** -\t"
 
     tmpfile = Tempfile.new(dropFileName)
-    client = DropboxClient.new(session, ACCESS_TYPE)
+    client = DropboxClient.new(dropbox_session, ACCESS_TYPE)
 
     # check for config.yml in users folder
     begin
