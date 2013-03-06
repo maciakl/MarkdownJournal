@@ -17,31 +17,41 @@ ACCESS_TYPE = :app_folder
 enable :sessions
 
 get '/' do
-    @blink = 'login'
+    @blink = 'write'
     @btext = '<i class="icon-edit icon-white"></i> Write'
     @bclass = 'btn-primary'
     erb :index
 end
 
 get '/login' do
+    # Create dropbox session object and serialize it to the Sinatra session
     dropbox_session = DropboxSession.new(APP_KEY, APP_SECRET)
     dropbox_session.get_request_token
     session[:dropbox] = dropbox_session.serialize()
+
+    # redirect user to Dropbox auth page
     redirect authorize_url = dropbox_session.get_authorize_url(URL)
 end
 
 get '/logout' do
+    # destroy session array
     session = {}
     redirect '/'
 end
 
 get '/write' do
 
-    #redirect '/login' unless session[:dropbox] != nil
+    redirect '/login' unless session[:dropbox] != nil
+
+    # deserialize DropboxSession from Sinatra session store
     dropbox_session = DropboxSession::deserialize(session[:dropbox])
 
+    # check if user authorized via the web link (has access token)
+    # redirect to login page if not
     begin
         dropbox_session.get_access_token
+        
+        # serialize for future use
         session[:dropbox] = dropbox_session.serialize();
         @blink = 'logout'
         @btext = 'Log Out'
@@ -57,7 +67,10 @@ post '/write' do
     # make sure the user authorized with Drobox
     redirect '/login' unless session[:dropbox] 
     
+    # get DropboxSession out of Sinatra session store again
     dropbox_session = DropboxSession::deserialize(session[:dropbox])
+
+    # make sure it still has access token
     redirect 'login' unless dropbox_session.authorized?
 
     entry = params[:entry]
@@ -65,10 +78,12 @@ post '/write' do
     # if empty string was submitted, do nothing
     redirect '/write' if entry.empty?
 
-    # figure out the name of the file for dropbox
-    # Default format is YYYY-MM-Monthname.markdown
+    # Set timezone to EST because main server is set to PST time
     Time.zone = "Eastern Time (US & Canada)"
     tm = Time.zone.now
+        
+    # figure out the name of the file for dropbox
+    # Default format is YYYY-MM-Monthname.markdown
     dropFileName = tm.strftime("%Y-%m.%B") + ".markdown"
 
     # Define the default headings 
@@ -91,11 +106,12 @@ post '/write' do
         puts tmpcnf
         cnf = YAML::load(tmpcnf)
 
+        # Optional headers from the user config file
         big_heading = "#" + tm.strftime(cnf['document_heading']) unless cnf['document_heading'] == nil
         daily_heading = "##" + tm.strftime(cnf['daily_heading']) unless cnf['daily_heading'] == nil
         heading = "**" + tm.strftime(cnf['timestamp']) + "** -\t" unless cnf['timestamp'] == nil
     rescue 
-        puts "No config file..."
+        puts "No config file... Good."
     end
 
 
