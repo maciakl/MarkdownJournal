@@ -2,4 +2,5 @@
 tmp
 public/components
 public/google*.html
+public/favicon.gif
 config.yml
