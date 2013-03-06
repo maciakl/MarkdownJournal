@@ -73,7 +73,7 @@ Licensing
 Markdown Journal is licensed under [GPLv3][gp].
 
 [mj]: http://markdownjournal.com
-[rb]: http://rubylang.org
+[rb]: http://ruby-lang.org
 [gm]: http://rubygems.org/
 [sn]: http://www.sinatrarb.com/
 [dx]: http://www.dropbox.com
