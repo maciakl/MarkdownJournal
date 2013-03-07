@@ -35,7 +35,8 @@
         <p>The values should follow the formating guidelines for the 
         <a href="http://www.ruby-doc.org/core-2.0/Time.html#method-i-strftime">Ruby strftime method</a>.</p>
 
-        <p><span class="label label-info">Note!</span> If you change the config file in the middle of the day, it could cause the
+        <p><span class="label label-warning">Caution!</span><br/> 
+        If you change the config file in the middle of the day, it could cause the
         <code>daily_heading</code> to get re-inserted into the file at the next entry.</p>
 
     </div>
@@ -84,10 +85,12 @@
             </tbody>
         </table>
 
+        <h3>Timezone Settings</h3>
+
         <p>You can also set your timezone using a <code>timezone</code> setting. The timezone accepts
         the following values:</p>
     
-            <ul>
+            <ul class="muted">
                 <li>Atlantic Time (Canada)</li>
                 <li>Central Time (US & Canada)</li>
                 <li>Eastern Time (US & Canada)</li>
@@ -109,8 +112,7 @@
         <pre>
     document_heading: %Y-%m
     daily_heading: %d
-    timestamp: %R
-        </pre>
+    timestamp: %R </pre>
 
         <p>This would yield a very minimalistic Journal style:</p>
 
@@ -121,15 +123,34 @@
         <pre>
     document_heading: Journal Entries for %B of %Y
     daily_heading: Notes for %A, %e
-    timestamp: Posted at %r
-        </pre>
+    timestamp: Posted at %r </pre>
 
         <p>This would likely look something like this:</p>
 
         <img src="img/samp2.PNG" alt="Fancy Journal"/>
 
+        <h3>Timezone</h3>
+
+        <p>To change the time zone, simply include it in <code>config.yaml</code> like this:</p>
+
+        <pre>
+    timezone: Pacific Time (US & Canada) </pre>
+
+        <p>If you only wish to change the <code>timezone</code> setting, you don't have to redefine the headings.
+        Just skip them entirely if you wish.</p>
+
+        <p><span class="label label-info">Note!</span><br/> 
+        If the <code>timezone</code> setting is not one of the 
+        <a href="https://github.com/maciakl/MarkdownJournal/wiki/Timezones">recognized values</a> then <em>Markdown Journal</em>
+        will fall back on using Eastern Standard time.</p>
+
+        <h3>Reset to Defaults</h3>
+
         <p>To reset your headings back to the default, simply delete the 
         <code>config.yml</code> file from your dropbox folder.</p>
+
+        <p>Please be aware that this may cause the <code>daily_heading</code> to be re-inserted into your file next time you post
+        an entry. Simply delete it manually.</p>
 
     </div>
 
