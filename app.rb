@@ -77,27 +77,7 @@ post '/write' do
 
     # if empty string was submitted, do nothing
     redirect '/write' if entry.empty?
-
-    # Set timezone to EST because main server is set to PST time
-    Time.zone = "Eastern Time (US & Canada)"
-    tm = Time.zone.now
-        
-    # figure out the name of the file for dropbox
-    # Default format is YYYY-MM-Monthname.markdown
-    dropFileName = tm.strftime("%Y-%m.%B") + ".markdown"
-
-    # Define the default headings 
-    
-    # Month and year - goes at the top of a new document
-    big_heading = "#" + tm.strftime("%B %Y")
-    
-    # Day of the week - only included once per day
-    daily_heading = "##" + tm.strftime("%A") + " the " + tm.day.ordinalize
-    
-    # Time-stamp for each entry
-    heading = "**" + tm.strftime("%l:%M%P") + "** -\t"
-
-    tmpfile = Tempfile.new(dropFileName)
+   
     client = DropboxClient.new(dropbox_session, ACCESS_TYPE)
 
     # check for config.yml in users folder
@@ -105,16 +85,43 @@ post '/write' do
         tmpcnf = client.get_file("config.yml")
         puts tmpcnf
         cnf = YAML::load(tmpcnf)
-
-        # Optional headers from the user config file
-        big_heading = "#" + tm.strftime(cnf['document_heading']) unless cnf['document_heading'] == nil
-        daily_heading = "##" + tm.strftime(cnf['daily_heading']) unless cnf['daily_heading'] == nil
-        heading = "**" + tm.strftime(cnf['timestamp']) + "** -\t" unless cnf['timestamp'] == nil
+        
     rescue 
         puts "No config file... Good."
     end
 
+    if cnf != nil
+        # try setting user defined time zone. If the string is wrong
+        # the zone will default to nil
+        (Time.zone = cnf['timezone']) rescue nil
+    end
 
+     # Set timezone to EST because if it is not set
+    Time.zone = "Eastern Time (US & Canada)" unless Time.zone != nil
+
+    tm = Time.zone.now
+    
+    # Figure out name for current file
+    # Default format is YYYY-MM-Monthname.markdown
+    dropFileName = tm.strftime("%Y-%m.%B") + ".markdown"
+    tmpfile = Tempfile.new(dropFileName)
+
+    # Figure out the Headings
+    
+    # Goes at the top of a new document
+    big_heading = "#" + tm.strftime("%B %Y")
+    
+    # Day of the week - only included once per day
+    daily_heading = "##" + tm.strftime("%A") + " the " + tm.day.ordinalize
+    
+    # Time-stamp for each entry
+    heading = "**" + tm.strftime("%l:%M%P") + "** -\t"
+    
+    if cnf != nil
+        big_heading = "#" + tm.strftime(cnf['document_heading']) unless cnf['document_heading'] == nil
+        daily_heading = "##" + tm.strftime(cnf['daily_heading']) unless cnf['daily_heading'] == nil
+        heading = "**" + tm.strftime(cnf['timestamp']) + "** -\t" unless cnf['timestamp'] == nil
+    end
 
     begin
         # try downloading this months file
