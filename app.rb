@@ -115,12 +115,12 @@ post '/write' do
     daily_heading = "##" + tm.strftime("%A") + " the " + tm.day.ordinalize
     
     # Time-stamp for each entry
-    heading = "**" + tm.strftime("%l:%M%P") + "** -\t"
+    heading = "**" + tm.strftime("%l:%M%P").strip + "** -\t"
     
     if cnf != nil
         big_heading = "#" + tm.strftime(cnf['document_heading']) unless cnf['document_heading'] == nil
         daily_heading = "##" + tm.strftime(cnf['daily_heading']) unless cnf['daily_heading'] == nil
-        heading = "**" + tm.strftime(cnf['timestamp']) + "** -\t" unless cnf['timestamp'] == nil
+        heading = "**" + tm.strftime(cnf['timestamp']).strip + "** -\t" unless cnf['timestamp'] == nil
     end
 
     begin
