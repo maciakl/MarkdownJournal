@@ -88,15 +88,15 @@
         <h3>Timezone Settings</h3>
 
         <p>You can also set your timezone using a <code>timezone</code> setting. The timezone accepts
-        the following values:</p>
+        values like:</p>
     
             <ul class="muted">
-                <li>Atlantic Time (Canada)</li>
-                <li>Central Time (US & Canada)</li>
-                <li>Eastern Time (US & Canada)</li>
-                <li>Indiana (East)</li>
-                <li>Mountain Time (US & Canada)</li>
-                <li>Pacific Time (US & Canada)</li>
+                <li>America/New_York</li>
+                <li>America/Los_Angeles</li>
+                <li>America/Chicago</li>
+                <li>America/Detroit</li>
+                <li>America/Denver</li>
+                <li>Etc..</li>
             </ul>
 
             <p>Full list of acceptable values is <a href="https://github.com/maciakl/MarkdownJournal/wiki/Timezones">located here</a>.</p>
@@ -134,7 +134,7 @@
         <p>To change the time zone, simply include it in <code>config.yaml</code> like this:</p>
 
         <pre>
-    timezone: Pacific Time (US & Canada) </pre>
+    timezone: America/Los_Angeles</pre>
 
         <p>If you only wish to change the <code>timezone</code> setting, you don't have to redefine the headings.
         Just skip them entirely if you wish.</p>
@@ -143,6 +143,11 @@
         If the <code>timezone</code> setting is not one of the 
         <a href="https://github.com/maciakl/MarkdownJournal/wiki/Timezones">recognized values</a> then <em>Markdown Journal</em>
         will fall back on using Eastern Standard time.</p>
+
+        <p><span class="label label-important">Caution!</span><br/>
+        If you are currently using a config file, please note that the time zone strings have recently changed. If you are using 
+        a string such as <em class="text-error">Eastern Time (US & Canada)</em> please change it to <em class="text-success">America/New_York</em> 
+        to avoid problems.</p>
 
         <h3>Reset to Defaults</h3>
 

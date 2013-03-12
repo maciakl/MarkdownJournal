@@ -4,6 +4,7 @@ require 'yaml'
 require 'dropbox_sdk'
 require 'active_support/core_ext/integer/inflections'
 require 'active_support/time'
+require 'tzinfo'
 
 #YAML::ENGINE.yamler= 'syck'
 config = YAML::load_file('config.yml')
@@ -13,6 +14,7 @@ APP_SECRET = config['secret']
 URL = config['url']
 ACCESS_TYPE = :app_folder
 
+DEFAULT_TIMEZONE = "America/New_York"
 
 enable :sessions
 
@@ -93,14 +95,14 @@ post '/write' do
     if cnf != nil
         # try setting user defined time zone. If the string is wrong
         # the zone will default to nil
-        (Time.zone = cnf['timezone']) rescue nil
+        (timeZone = TZInfo::Timezone.get(cnf['timezone'])) rescue nil
     end
 
-     # Set timezone to EST because if it is not set
-    Time.zone = "Eastern Time (US & Canada)" unless Time.zone != nil
-
-    tm = Time.zone.now
+    # Set timezone to EST if it is not set
+    timeZone = TZInfo::Timezone.get(DEFAULT_TIMEZONE) unless timeZone != nil
     
+    tm = timeZone.utc_to_local(Time.now.utc)
+
     # Figure out name for current file
     # Default format is YYYY-MM-Monthname.markdown
     dropFileName = tm.strftime("%Y-%m.%B") + ".markdown"
