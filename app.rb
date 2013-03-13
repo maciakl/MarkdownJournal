@@ -130,10 +130,15 @@ post '/write' do
         oldfile = client.get_file(dropFileName)
         tmpfile.write(oldfile)
         tmpfile.write("  \r\n  \r\n")
-    rescue
+    rescue DropboxError => e
         # if the file does not exist on dropbox create new tempfile
-        puts "File not found... Creating new one"
-        tmpfile.write(big_heading+"  \r\n  \r\n")
+        puts e.message
+        
+        # We want to bug out if it is a different error message
+        if e.message == 'File not Found' || e.message == 'File has been deleted'
+            newfile = true
+            tmpfile.write(big_heading+"  \r\n  \r\n")
+        end
     end 
     
     # include daily heading if it is not in already
@@ -144,10 +149,12 @@ post '/write' do
     tmpfile.write(entry)
     tmpfile.close
 
-    # Drobpbox upload
-    tmpfile.open
-    response = client.put_file("/"+dropFileName, tmpfile, true)
-    #puts "uploaded: ", response.inspect
+    # Drobpbox upload (only if old file exists, or new file was legally created)
+    if oldfile || newfile
+        tmpfile.open
+        response = client.put_file("/"+dropFileName, tmpfile, true)
+        #puts "uploaded: ", response.inspect
+    end
 
     # cleanup
     tmpfile.close
