@@ -1,6 +1,6 @@
-source :rubygems
-source :rubyforge
-gem 'sinatra'
-gem 'dropbox-sdk'
-gem 'activesupport'
-gem 'tzinfo'
+source 'https://rubygems.org'
+source 'http://gems.rubyforge.org'
+gem 'sinatra', '~>1.4.2'
+gem 'dropbox-sdk', '~>1.5.1'
+gem 'activesupport', '~>3.2.13'
+gem 'tzinfo', '~>0.3.4'
