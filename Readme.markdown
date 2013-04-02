@@ -6,13 +6,24 @@ An online journal which saves short, tweet like entries into Markdown documents 
 Requirements
 ------------
 
-### Runtime Requirements
+### System Requirements
 
 * [Ruby][rb]
 * [Ruby Gems][gm]
+* [Bundler][bu]
+
+### Runtime Gem Dependencies
+
+Gem dependencies are now managed by [Bundler][bu]. To download and install all the required gems automatically run the following in the project folder:
+
+    bundle install
+
+In case you are interested, here is the list of gems that are being installed:
+
 * [Sinatra Gem][sn]
 * [Active Support Gem][as]
 * [Dropbox SDK Gem][db]
+* [TZInfo Library][tz]
 
 ### Development Time Requirements
 
@@ -42,10 +53,10 @@ Go to the `public` directory and run:
 
 This will fetch Twitter Bootstrap and jQuery into the `public/components` directory. Now you should be all set.
 
-Make sure you have `sinatra` and `dropbox-sdk` gems installed:
+Make sure you have `sinatra`, `dropbox-sdk` and other gems installed:
 
-    gem install sinatra
-    gem install dropbox-sdk
+    gem install bundler
+    bundle install
 
 You can run the application locally like this:
 
@@ -72,6 +83,7 @@ Licensing
 
 Markdown Journal is licensed under [GPLv3][gp].
 
+[bu]: http://gembundler.com/
 [mj]: http://markdownjournal.com
 [rb]: http://ruby-lang.org
 [gm]: http://rubygems.org/
@@ -82,5 +94,6 @@ Markdown Journal is licensed under [GPLv3][gp].
 [no]: http://nodejs.org/
 [bo]: http://twitter.github.com/bower/
 [gp]: http://www.gnu.org/licenses/gpl-3.0-standalone.html
+[tz]: http://tzinfo.rubyforge.org/
 
 [rg]: https://www.dropbox.com/developers/apps
