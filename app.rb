@@ -132,10 +132,11 @@ post '/write' do
         tmpfile.write("  \r\n  \r\n")
     rescue DropboxError => e
         # if the file does not exist on dropbox create new tempfile
+        puts "Error downloading file from Dropbox."
         puts e.message
         
         # We want to bug out if it is a different error message
-        if e.message == 'File not Found' || e.message == 'File has been deleted'
+        if e.message == 'File not found' || e.message == 'File has been deleted'
             newfile = true
             tmpfile.write(big_heading+"  \r\n  \r\n")
         end
