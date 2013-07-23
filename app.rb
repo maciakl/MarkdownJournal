@@ -171,6 +171,30 @@ post '/write' do
     erb :write
 end
 
+get '/read' do
+
+    redirect '/login' unless session[:dropbox] != nil
+
+    # deserialize DropboxSession from Sinatra session store
+    dropbox_session = DropboxSession::deserialize(session[:dropbox])
+
+    # check if user authorized via the web link (has access token)
+    # redirect to login page if not
+    begin
+        dropbox_session.get_access_token
+        
+        # serialize for future use
+        session[:dropbox] = dropbox_session.serialize();
+        @blink = 'logout'
+        @btext = 'Log Out'
+        @bclass =''
+        erb :read
+    rescue
+        redirect '/login'
+    end
+end
+
+
 get '/about' do
     erb :about
 end
