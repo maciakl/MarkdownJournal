@@ -19,11 +19,11 @@
         <h2>Previous Entries</h2>
         <p>Click on the links below to read your existing journal entries.</p>
         <ul class="multicolumn">
-        <% @files.each do |file| %>
+        <% @files.reverse.each do |file| %>
             <% if file['path'].end_with?('.markdown') %>
                 <li>
                     <a href="/read<%= file['path'] %>">
-                        <%= file['path'][/\.([A-Za-z]*)\.markdown/, 1] +'  '+ file['path'][1,4] %>
+                        <%= file['path'][/\.([A-Za-z]*)\.markdown/, 1][0,3] +'  '+ file['path'][1,4] %>
                     </a>
                 </li>
             <% end %>
