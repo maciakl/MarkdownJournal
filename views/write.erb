@@ -20,7 +20,7 @@
         <p>Click on the links below to read your existing journal entries.</p>
         <ul class="multicolumn">
         <% @files.reverse.each do |file| %>
-            <% if file['path'].end_with?('.markdown') %>
+            <% if (file['path'] =~ /^\/[0-9]*-[0-9]*\.[A-Za-z]*\.markdown$/) == 0 %>
                 <li>
                     <a href="/read<%= file['path'] %>">
                         <%= file['path'][/\.([A-Za-z]*)\.markdown/, 1][0,3] +'  '+ file['path'][1,4] %>
