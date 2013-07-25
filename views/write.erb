@@ -14,3 +14,13 @@
 
     </div>
 </div>
+<div class="row">
+    <div class="span10">
+        <ul>
+        <% @files.each do |file| %>
+            <% if file['path'].end_with?('.markdown') %>
+                <li><%= file['path'] %></li>
+            <% end %>
+        <% end %>
+    </div>
+</div>
