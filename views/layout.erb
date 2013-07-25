@@ -8,7 +8,7 @@
     <meta name="author" content=""/>
 
     <!-- Bootstrap styles -->
-    <link href="components/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="/components/bootstrap/css/bootstrap.css" rel="stylesheet"/>
 
     <!-- Your Custom styles go here-->
     <style type="text/css">
@@ -18,9 +18,27 @@
         padding-bottom: 40px;
     }
 
+    .multicolumn {
+        -moz-column-count: 3; 
+        -moz-column-gap: 10px;
+        -webkit-column-count: 3; 
+        -webkit-column-gap: 10px;
+        column-count: 3;
+        column-gap: 10px;
+    }
+
+    div.journal h1 {
+        text-align: right;
+        font-size: 60px;
+        padding-bottom: 10px;
+    }
+    div.journal h2 {
+        border-top: 1px solid black;
+    }
+
     </style>
 
-    <link href="components/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
+    <link href="/components/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"/>
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -28,14 +46,14 @@
     <![endif]-->
 
     <!-- Add your own favicon -->
-    <link rel="shortcut icon" href="favicon.png"/>
-    <link rel="shortcut icon" href="favicon.ico"/>
-    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-    <link rel="apple-touch-icon" sizes="29x29" href="apple-touch-icon-29x29.png" />
-    <link rel="apple-touch-icon" sizes="57x57" href="apple-touch-icon-57x57.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="apple-touch-icon-72x72.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="apple-touch-icon-114x114.png" />
-    <link rel="apple-touch-icon" sizes="144x144" href="apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/favicon.png"/>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="29x29" href="/apple-touch-icon-29x29.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon.png" />
 </head>
 
   <body>
@@ -49,7 +67,7 @@
             <span class="icon-bar"></span>
         </a>
             <a class="brand" href="/">
-              <img src="icon.png" alt="logo"/>
+              <img src="/icon.png" alt="logo"/>
             Markdown Journal</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
@@ -86,8 +104,8 @@
     <!-- JavaScript Stuff
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="components/jquery/jquery.min.js"></script>
-    <script src="components/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/components/jquery/jquery.min.js"></script>
+    <script src="/components/bootstrap/js/bootstrap.min.js"></script>
     
     <!-- Add your custom scripts here -->
     <script>

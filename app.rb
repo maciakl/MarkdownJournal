@@ -61,7 +61,6 @@ get '/write' do
 
         client = DropboxClient.new(dropbox_session, ACCESS_TYPE)
         list = client.metadata('/')
-
         @files = list['contents']
 
         @blink = 'logout'
@@ -73,6 +72,23 @@ get '/write' do
         puts $!, $@
         redirect '/login'
     end
+end
+
+get '/read/:file' do
+
+    # make sure the user authorized with Drobox
+    redirect '/login' unless session[:dropbox] 
+    
+    # get DropboxSession out of Sinatra session store again
+    dropbox_session = DropboxSession::deserialize(session[:dropbox])
+
+    # make sure it still has access token
+    redirect 'login' unless dropbox_session.authorized?
+
+    client = DropboxClient.new(dropbox_session, ACCESS_TYPE)
+    temp = client.get_file(params[:file])
+
+    erb :read, :locals => { :content => markdown(temp) }
 end
 
 post '/write' do
@@ -173,6 +189,10 @@ post '/write' do
     tmpfile.unlink
 
     # display the write page again
+    client = DropboxClient.new(dropbox_session, ACCESS_TYPE)
+    list = client.metadata('/')
+    @files = list['contents']
+
     @blink = 'logout'
     @btext = 'Log Out'
     @bclass =''

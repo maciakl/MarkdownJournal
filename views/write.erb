@@ -16,11 +16,20 @@
 </div>
 <div class="row">
     <div class="span10">
-        <ul>
+        <h2>Previous Entries</h2>
+        <p>Click on the links below to read your existing journal entries.</p>
+        <ul class="multicolumn">
         <% @files.each do |file| %>
             <% if file['path'].end_with?('.markdown') %>
-                <li><%= file['path'] %></li>
+                <li>
+                    <a href="/read<%= file['path'] %>">
+                        <%= file['path'][/\.([A-Za-z]*)\.markdown/, 1] +'  '+ file['path'][1,4] %>
+                    </a>
+                </li>
             <% end %>
         <% end %>
+        </ul>
+
+        <p><small><span class="label label-info">Note:</span> &nbsp; None of these pages are ever cached</small></p>
     </div>
 </div>
