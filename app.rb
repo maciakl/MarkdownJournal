@@ -23,7 +23,7 @@ enable :sessions
 
 get '/' do
     @blink = 'write'
-    @btext = '<i class="icon-edit icon-white"></i> Write'
+    @btext = '<i class="icon-gift icon-white"></i> Login with Dropbox'
     @bclass = 'btn-primary'
     erb :index
 end
