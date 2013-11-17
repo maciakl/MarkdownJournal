@@ -22,9 +22,7 @@ DEFAULT_TIMEZONE = "America/New_York"
 enable :sessions
 
 get '/' do
-    @blink = 'write'
-    @btext = '<i class="icon-gift icon-white"></i> Login with Dropbox'
-    @bclass = 'btn-primary'
+    @loggedin = (session[:dropbox] != nil)
     erb :index
 end
 
@@ -63,9 +61,7 @@ get '/write' do
         list = client.metadata('/')
         @files = list['contents']
 
-        @blink = 'logout'
-        @btext = 'Log Out'
-        @bclass =''
+        @loggedin = (session[:dropbox] != nil)
         erb :write
     rescue
         puts '######################'
@@ -88,6 +84,7 @@ get '/read/:file' do
     client = DropboxClient.new(dropbox_session, ACCESS_TYPE)
     temp = client.get_file(params[:file])
 
+    @loggedin = (session[:dropbox] != nil)
     erb :read, :locals => { :content => markdown(temp) }
 end
 
@@ -193,24 +190,26 @@ post '/write' do
     list = client.metadata('/')
     @files = list['contents']
 
-    @blink = 'logout'
-    @btext = 'Log Out'
-    @bclass =''
+    @loggedin = (session[:dropbox] != nil)
     erb :write
 end
 
 get '/about' do
+    @loggedin = (session[:dropbox] != nil)
     erb :about
 end
 
 get '/contact' do
+    @loggedin = (session[:dropbox] != nil)
     erb :contact
 end
 
 get '/config' do
+    @loggedin = (session[:dropbox] != nil)
     erb :config
 end
 
 get '/privacy' do
+    @loggedin = (session[:dropbox] != nil)
     erb :privacy
 end

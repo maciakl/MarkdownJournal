@@ -77,7 +77,10 @@
                       <li><a href="/privacy">Privacy</a></li>
                   </ul>
               </div><!--/.nav-collapse -->
-              <div><a class="btn btn-primary pull-right" href="/write"><i class="icon-edit icon-white"></i> Write</a></div>
+              <div>
+                  <% if @loggedin %><a class="btn btn-pull-right" href="/logout">Log Out</a><% end %>
+                  <a class="btn btn-primary pull-right" href="/write"><i class="icon-edit icon-white"></i> Write</a>
+              </div>
           </div>
       </div>
   </div>
