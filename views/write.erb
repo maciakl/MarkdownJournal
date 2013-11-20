@@ -8,6 +8,7 @@
                 <label>Each entry will be posted with current time-stamp. <img src="mkd.png" alt="Markdown" titld="Markdown"/>
                         Markdown formatting is supported.</label>
                 <textarea id="entry" name="entry" rows="10" class="field span8" placeholder="Dear diary..."></textarea><br/>
+                <input id="saved" name="saved" type="hidden" value="<%= @saved %>"/>
                 <button type="submit" class="btn btn-large btn-primary"><i class="icon-check icon-white"></i> Submit</button>
             </fieldset>
         </form>

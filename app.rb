@@ -190,6 +190,7 @@ post '/write' do
     list = client.metadata('/')
     @files = list['contents']
 
+    @saved = 1
     @loggedin = (session[:dropbox] != nil)
     erb :write
 end
