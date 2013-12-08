@@ -1,15 +1,18 @@
 <div class="row">
     <div class="span10">
-        <h2>New Entry</h2>
+        <h2><i class="fa fa-pencil"></i> Write </h2>
         
         <form method="post">
             <fieldset>
-                <legend>What is on your mind?</legend>
-                <label>Each entry will be posted with current time-stamp. <img src="mkd.png" alt="Markdown" titld="Markdown"/>
-                        Markdown formatting is supported.</label>
-                <textarea id="entry" name="entry" rows="10" class="field span8" placeholder="Dear diary..."></textarea><br/>
+              <legend>New Journal Entry <small>Each one will be posted with a current <i class="fa fa-clock-o"></i> time-stamp.</small></legend>
+              <label>
+                  Your entry will be <i class="fa fa-save"></i> saved in-browser even if you close the window.
+                  <img src="mkd.png" alt="Markdown Logo" title="Markdown Logo"/>
+                  Markdown formatting is supported.
+                </label>
+                <textarea id="entry" name="entry" rows="10" class="field span8" placeholder="Type your entry here..."></textarea><br/>
                 <input id="saved" name="saved" type="hidden" value="<%= @saved %>"/>
-                <button type="submit" class="btn btn-large btn-primary"><i class="icon-check icon-white"></i> Submit</button>
+                <button type="submit" class="btn btn-large btn-primary"><i class="fa fa-dropbox"></i> Save to Dropbox</button>
             </fieldset>
         </form>
 
@@ -18,8 +21,8 @@
 </div>
 <div class="row">
     <div class="span10">
-        <h2>Previous Entries</h2>
-        <p>Click on the links below to read your existing journal entries.</p>
+        <h2><i class="fa fa-book"></i> Read <small>Browse your Journal Archives</small></h2>
+        <p>Click on the links below to read your journal for that month.</p>
         <ul class="multicolumn">
         <% @files.reverse.each do |file| %>
             <% if (file['path'] =~ /^\/[0-9]*-[0-9]*\.[A-Za-z]*\.markdown$/) == 0 %>
@@ -32,6 +35,7 @@
         <% end %>
         </ul>
 
+        <hr/>
         <p><small><span class="label label-info">Note:</span> &nbsp; None of these pages are ever cached</small></p>
     </div>
 </div>
