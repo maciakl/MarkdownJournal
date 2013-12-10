@@ -79,7 +79,7 @@ get '/read/:file' do
     dropbox_session = DropboxSession::deserialize(session[:dropbox])
 
     # make sure it still has access token
-    redirect 'login' unless dropbox_session.authorized?
+    redirect '/login' unless dropbox_session.authorized?
 
     client = DropboxClient.new(dropbox_session, ACCESS_TYPE)
     temp = client.get_file(params[:file])
@@ -97,7 +97,7 @@ post '/write' do
     dropbox_session = DropboxSession::deserialize(session[:dropbox])
 
     # make sure it still has access token
-    redirect 'login' unless dropbox_session.authorized?
+    redirect '/login' unless dropbox_session.authorized?
 
     entry = params[:entry]
 
