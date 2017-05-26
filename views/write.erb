@@ -25,10 +25,10 @@
         <p>Click on the links below to read your journal for that month.</p>
         <ul class="multicolumn">
         <% @files.reverse.each do |file| %>
-            <% if (file['path'] =~ /^\/[0-9]*-[0-9]*\.[A-Za-z]*\.markdown$/) == 0 %>
+            <% if (file.path_display =~ /^\/[0-9]*-[0-9]*\.[A-Za-z]*\.markdown$/) == 0 %>
                 <li>
-                    <a href="/read<%= file['path'] %>">
-                        <%= file['path'][/\.([A-Za-z]*)\.markdown/, 1][0,3] +'  '+ file['path'][1,4] %>
+                    <a href="/read<%= file.path_display %>">
+                        <%= file.path_display[/\.([A-Za-z]*)\.markdown/, 1][0,3] +'  '+ file.path_display[1,4] %>
                     </a>
                 </li>
             <% end %>

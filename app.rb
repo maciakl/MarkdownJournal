@@ -4,7 +4,7 @@ require 'bundler/setup'
 require 'sinatra'
 require 'tempfile'
 require 'yaml'
-require 'dropbox_sdk'
+require 'dropbox_api'
 require 'active_support/core_ext/integer/inflections'
 require 'active_support/time'
 require 'tzinfo'
@@ -19,6 +19,11 @@ ACCESS_TYPE = :app_folder
 
 DEFAULT_TIMEZONE = "America/New_York"
 
+def authenticator
+    # Create dropbox session object and serialize it to the Sinatra session
+    authenticator = DropboxApi::Authenticator.new(APP_KEY, APP_SECRET)
+end
+
 enable :sessions
 
 get '/' do
@@ -27,13 +32,20 @@ get '/' do
 end
 
 get '/login' do
-    # Create dropbox session object and serialize it to the Sinatra session
-    dropbox_session = DropboxSession.new(APP_KEY, APP_SECRET)
-    dropbox_session.get_request_token
-    session[:dropbox] = dropbox_session.serialize()
-
+    session[:dropbox] = 'init'
     # redirect user to Dropbox auth page
-    redirect authorize_url = dropbox_session.get_authorize_url(URL)
+    redirect authenticator.authorize_url :redirect_uri => URL #= dropbox_session.get_authorize_url(URL)
+end
+
+get '/auth' do
+
+    redirect 'login' unless session[:dropbox] == 'init'
+
+    auth = authenticator.get_token(params['code'], :redirect_uri => URL)
+    token = auth.token
+
+    session[:dropbox] = token
+    redirect '/write'
 end
 
 get '/logout' do
@@ -45,25 +57,22 @@ end
 get '/write' do
 
     redirect '/login' unless session[:dropbox] != nil
+    redirect '/auth' if session[:dropbox] == 'init' 
 
-    # deserialize DropboxSession from Sinatra session store
-    dropbox_session = DropboxSession::deserialize(session[:dropbox])
-
-    # check if user authorized via the web link (has access token)
-    # redirect to login page if not
     begin
-        dropbox_session.get_access_token
-        
-        # serialize for future use
-        session[:dropbox] = dropbox_session.serialize();
 
-        client = DropboxClient.new(dropbox_session, ACCESS_TYPE)
-        list = client.metadata('/')
-        @files = list['contents']
+        token = session[:dropbox]
+        
+        client = DropboxApi::Client.new(token)
+        list = client.list_folder "" #get_metadata('/')
+        @files = list.entries #list['contents']
 
         @loggedin = (session[:dropbox] != nil)
         erb :write
     rescue
+        puts '######################'
+        puts '######################'
+        puts '######################'
         puts '######################'
         puts $!, $@
         redirect '/login'
@@ -77,14 +86,16 @@ get '/read/:file' do
     # make sure the user authorized with Drobox
     redirect '/login' unless session[:dropbox] 
     
-    # get DropboxSession out of Sinatra session store again
-    dropbox_session = DropboxSession::deserialize(session[:dropbox])
+    # get Dropbox token out of session store
+    token  = session[:dropbox]
+    redirect '/login' if token == 'init'
 
-    # make sure it still has access token
-    redirect '/login' unless dropbox_session.authorized?
+    client = DropboxApi::Client.new(token)
 
-    client = DropboxClient.new(dropbox_session, ACCESS_TYPE)
-    temp = client.get_file(params[:file])
+    temp = ""
+    client.download("/"+params[:file]) do |chunk|
+      temp += chunk
+    end
 
     @loggedin = (session[:dropbox] != nil)
     erb :read, :locals => { :content => markdown(temp) }
@@ -97,18 +108,16 @@ post '/write' do
     # make sure the user authorized with Drobox
     redirect '/login' unless session[:dropbox] 
     
-    # get DropboxSession out of Sinatra session store again
-    dropbox_session = DropboxSession::deserialize(session[:dropbox])
-
-    # make sure it still has access token
-    redirect '/login' unless dropbox_session.authorized?
+    # get Dropbox token from session
+    token = session[:dropbox]
+    redirect '/login' if token == 'init'
 
     entry = params[:entry]
 
     # if empty string was submitted, do nothing
     redirect '/write' if entry.empty?
    
-    client = DropboxClient.new(dropbox_session, ACCESS_TYPE)
+    client = DropboxApi::Client.new(token)
 
     # check for config.yml in users folder
     begin
@@ -155,10 +164,15 @@ post '/write' do
 
     begin
         # try downloading this months file
-        oldfile = client.get_file(dropFileName)
+        oldfile = ""
+
+        client.download("/"+dropFileName) do |chunk|
+          oldfile += chunk
+        end
+
         tmpfile.write(oldfile)
         tmpfile.write("  \r\n  \r\n")
-    rescue DropboxError => e
+    rescue Exception => e
         # if the file does not exist on dropbox create new tempfile
         puts "Error downloading file from Dropbox."
         puts e.message
@@ -181,7 +195,8 @@ post '/write' do
     # Drobpbox upload (only if old file exists, or new file was legally created)
     if oldfile || newfile
         tmpfile.open
-        response = client.put_file("/"+dropFileName, tmpfile, true)
+        content = tmpfile.read
+        response = client.upload("/"+dropFileName, content, :mode => :overwrite )
         #puts "uploaded: ", response.inspect
     end
 
@@ -190,9 +205,9 @@ post '/write' do
     tmpfile.unlink
 
     # display the write page again
-    client = DropboxClient.new(dropbox_session, ACCESS_TYPE)
-    list = client.metadata('/')
-    @files = list['contents']
+    client = DropboxApi::Client.new(token)
+    list = client.list_folder ""
+    @files = list.entries
 
     @saved = 1
     @loggedin = (session[:dropbox] != nil)
