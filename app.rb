@@ -18,7 +18,7 @@ URL = config['url']
 SESSION_SECRET = config['session_secret']
 ACCESS_TYPE = :app_folder
 
-DEFAULT_TIMEZONE = "America/New_York"
+DEFAULT_TIMEZONE = 'America/New_York'
 
 def authenticator
     # Create dropbox session object and serialize it to the Sinatra session
@@ -141,13 +141,13 @@ post '/write' do
         # try setting user defined time zone. If the string is wrong
         # the zone will default to nil
         puts "Timezone configured to " + cnf['timezone']
-        (timeZone = TZInfo::Timezone.get(cnf['timezone'])) rescue nil
+        (zone = TZInfo::Timezone.get(cnf['timezone'])) rescue nil
     end
 
     # Set timezone to EST if it is not set
-    timeZone = TZInfo::Timezone.get(DEFAULT_TIMEZONE) unless timeZone != nil
+    zone = TZInfo::Timezone.get(DEFAULT_TIMEZONE) if zone.nil?
     
-    tm = timeZone.utc_to_local(Time.now.utc)
+    tm = zone.utc_to_local(Time.now.utc)
 
     # Figure out name for current file
     # Default format is YYYY-MM-Monthname.markdown
