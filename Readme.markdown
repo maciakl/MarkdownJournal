@@ -22,7 +22,7 @@ In case you are interested, here is the list of gems that are being installed:
 
 * [Sinatra Gem][sn]
 * [Active Support Gem][as]
-* [Dropbox SDK Gem][db]
+* [Dropbox API Gem][db]
 * [TZInfo Library][tz]
 
 ### Development Time Requirements
@@ -53,7 +53,7 @@ Go to the `public` directory and run:
 
 This will fetch Twitter Bootstrap and jQuery into the `public/components` directory. Now you should be all set.
 
-Make sure you have `sinatra`, `dropbox-sdk` and other gems installed:
+Make sure you have `sinatra`, `dropbox_api` and other gems installed:
 
     gem install bundler
     bundle install
@@ -89,7 +89,7 @@ Markdown Journal is licensed under [GPLv3][gp].
 [gm]: http://rubygems.org/
 [sn]: http://www.sinatrarb.com/
 [dx]: http://www.dropbox.com
-[db]: https://www.dropbox.com/developers/core/setup#ruby
+[db]: https://github.com/Jesus/dropbox_api
 [as]: http://rubygems.org/gems/activesupport
 [no]: http://nodejs.org/
 [bo]: http://twitter.github.com/bower/

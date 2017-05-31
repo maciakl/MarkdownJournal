@@ -121,10 +121,13 @@ post '/write' do
 
     # check for config.yml in users folder
     begin
-        tmpcnf = client.get_file("config.yml")
+        tmpcnf = ""
+        client.download("/config.yml") do |chunk|
+          tmpcnf += chunk
+        end
+        puts 'Config file:'
         puts tmpcnf
         cnf = YAML::load(tmpcnf)
-        
     rescue 
         puts "No config file... Good."
     end
@@ -143,10 +146,9 @@ post '/write' do
     # Figure out name for current file
     # Default format is YYYY-MM-Monthname.markdown
     dropFileName = tm.strftime("%Y-%m.%B") + ".markdown"
-    tmpfile = Tempfile.new(dropFileName)
-
+     
     # Figure out the Headings
-    
+     
     # Goes at the top of a new document
     big_heading = "#" + tm.strftime("%B %Y")
     
