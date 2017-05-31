@@ -132,7 +132,8 @@ post '/write' do
         puts 'Config file:'
         puts tmpcnf
         cnf = YAML::load(tmpcnf)
-    rescue 
+    rescue Exception => e
+        puts "Err" + e.message
         puts "No config file... Good."
     end
 
@@ -180,7 +181,7 @@ post '/write' do
     rescue Exception => e
         # if the file does not exist on dropbox create new tempfile
         puts "Error downloading file from Dropbox."
-        puts e.message
+        puts "Err:" + e.message
         
         # We want to bug out if it is a different error message
         if e.message.include?("not_found")
@@ -197,6 +198,7 @@ post '/write' do
 
     # Drobpbox upload the contents of the buffer if not empty
     if buffer != ""
+        puts "Attempting to upload " + dropFileName
         response = client.upload("/"+dropFileName, buffer, :mode => :overwrite )
         #puts "uploaded: ", response.inspect
     end
