@@ -137,9 +137,10 @@ post '/write' do
         puts "No config file... Good."
     end
 
-    if cnf != nil
+    if cnf['timezone'] != nil
         # try setting user defined time zone. If the string is wrong
         # the zone will default to nil
+        puts "Timezone configured to " + cnf['timezone']
         (timeZone = TZInfo::Timezone.get(cnf['timezone'])) rescue nil
     end
 
