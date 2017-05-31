@@ -15,6 +15,7 @@ config = YAML::load_file('config.yml')
 APP_KEY = config['key']
 APP_SECRET = config['secret']
 URL = config['url']
+SESSION_SECRET = config['session_secret']
 ACCESS_TYPE = :app_folder
 
 DEFAULT_TIMEZONE = "America/New_York"
@@ -25,6 +26,8 @@ def authenticator
 end
 
 enable :sessions
+set :session_secret, SESSION_SECRET
+set :protection, :except => :session_hijacking
 
 get '/' do
     @loggedin = (session[:dropbox] != nil)
@@ -51,7 +54,8 @@ end
 get '/logout' do
     # destroy session array
     session[:dropbox] = nil
-    redirect 'https://www.dropbox.com/logout'
+    session.clear
+    erb :logout
 end
 
 get '/write' do
