@@ -1,6 +1,6 @@
 .DS_store
 tmp
-public/components
 public/google*.html
+public/keybase.txt
 public/favicon.gif
 config.yml
