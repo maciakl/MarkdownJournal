@@ -51,7 +51,7 @@ end
 get '/logout' do
     # destroy session array
     session[:dropbox] = nil
-    redirect '/'
+    redirect 'https://www.dropbox.com/logout'
 end
 
 get '/write' do
