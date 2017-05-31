@@ -162,50 +162,43 @@ post '/write' do
         heading = "**" + tm.strftime(cnf['timestamp']).strip + "** -\t" unless cnf['timestamp'] == nil
     end
 
+    # buffer for the contents of the post
+    buffer = ""
+
     begin
-        # try downloading this months file
-        oldfile = ""
-
+        # try downloading this months file and add it to buffer
         client.download("/"+dropFileName) do |chunk|
-          oldfile += chunk
+          buffer += chunk
         end
-
-        tmpfile.write(oldfile)
-        tmpfile.write("  \r\n  \r\n")
+        buffer += "  \r\n  \r\n"
     rescue Exception => e
         # if the file does not exist on dropbox create new tempfile
         puts "Error downloading file from Dropbox."
         puts e.message
         
         # We want to bug out if it is a different error message
-        if e.message == 'File not found' || e.message == 'File has been deleted'
-            newfile = true
-            tmpfile.write(big_heading+"  \r\n  \r\n")
+        if e.message.include?("not_found")
+            buffer += big_heading + "  \r\n  \r\n"
         end
     end 
     
     # include daily heading if it is not in already
-    tmpfile.write(daily_heading + "  \r\n  \r\n") unless ( oldfile != nil && oldfile.include?(daily_heading) )
+    buffer += daily_heading + "  \r\n  \r\n" unless ( buffer != "" && buffer.include?(daily_heading) )
 
-    # append the entry to the end of the file
-    tmpfile.write(heading)
-    tmpfile.write(entry)
-    tmpfile.close
+    # append the heading and entry to the end of the buffer
+    buffer += heading
+    buffer += entry
 
-    # Drobpbox upload (only if old file exists, or new file was legally created)
-    if oldfile || newfile
-        tmpfile.open
-        content = tmpfile.read
-        response = client.upload("/"+dropFileName, content, :mode => :overwrite )
+    # Drobpbox upload the contents of the buffer if not empty
+    if buffer != ""
+        response = client.upload("/"+dropFileName, buffer, :mode => :overwrite )
         #puts "uploaded: ", response.inspect
     end
 
     # cleanup
-    tmpfile.close
-    tmpfile.unlink
+    buffer = nil
 
     # display the write page again
-    client = DropboxApi::Client.new(token)
     list = client.list_folder ""
     @files = list.entries
 
@@ -232,4 +225,9 @@ end
 get '/privacy' do
     @loggedin = (session[:dropbox] != nil)
     erb :privacy
+end
+
+get '/news' do
+    @loggedin = (session[:dropbox] != nil)
+    erb :news
 end
